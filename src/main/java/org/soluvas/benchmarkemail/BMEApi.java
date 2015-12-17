@@ -9,6 +9,9 @@ import org.apache.xmlrpc.common.TypeConverterFactoryImpl;
 import java.lang.reflect.Proxy;
 import java.net.URL;
 
+/**
+ * @see #getBMEServices()
+ */
 public class BMEApi {
     private final XmlRpcClient client;
 

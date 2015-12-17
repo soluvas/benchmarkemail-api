@@ -16,6 +16,10 @@ public class BenchmarkEmailException extends RuntimeException {
         super(message, cause);
     }
 
+    public BenchmarkEmailException(Throwable cause, String format, Object... params) {
+        super(String.format(format, params), cause);
+    }
+
     public BenchmarkEmailException(Throwable cause) {
         super(cause);
     }

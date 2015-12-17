@@ -3,9 +3,14 @@ package org.soluvas.benchmarkemail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * Sample usage of {@link BMEApi}. Only for testing.
+ */
 public class BMEApiMain {
     private static final Logger log = LoggerFactory.getLogger(BMEApiMain.class);
 
@@ -96,26 +101,24 @@ public class BMEApiMain {
             String Output = bmServices.listCreate(token, Mylistname);
             System.out.println("ListID = " + Output);
         } catch (Exception e) {
-            // Print out the exception that occurred
-            System.out.println(e.getMessage());
-            System.out.println("List by that name exists");
+            throw new BenchmarkEmailException(e, "List by name '%s' exists", Mylistname);
         }
     }
 
     public void listAddContacts() {
-        HashMap Contacts[] = new HashMap[2];
-        Contacts[0] = new HashMap();
-        Contacts[1] = new HashMap();
+        List<Map<String, Object>> contacts = new ArrayList<>();
+        contacts.add(new HashMap());
+        contacts.add(new HashMap());
 
-        Contacts[0].put("email", "sankey21@spideydomain.com");
-        Contacts[0].put("firstname", "Peter");
-        Contacts[0].put("lastname", "Parker");
+        contacts.get(0).put("email", "sankey21@spideydomain.com");
+        contacts.get(0).put("firstname", "Peter");
+        contacts.get(0).put("lastname", "Parker");
 
-        Contacts[1].put("email", "sankey22@battydomain.com");
-        Contacts[1].put("firstname", "Bruce");
-        Contacts[1].put("lastname", "Wayne");
+        contacts.get(1).put("email", "sankey22@battydomain.com");
+        contacts.get(1).put("firstname", "Bruce");
+        contacts.get(1).put("lastname", "Wayne");
 
-        int result = bmServices.listAddContacts(token, ListID, Contacts);
+        int result = bmServices.listAddContacts(token, ListID, contacts);
 
         System.out.println("Result  = " + result);
 
@@ -410,24 +413,20 @@ public class BMEApiMain {
     }
 
     public void listGet() {
-        int pageNumber = 1;
-        int pageSize = 100;
-        Object[] Lists = bmServices.listGet(token, "", pageNumber, pageSize, "", "");
-        int Counter = 0;
-
-        for (final Object List : Lists) {
-            final Map<String, Object> map = (Map<String, Object>) List;
-
-            for (final Object key : map.keySet()) {
-                final Object value = map.get(key);
-                System.out.print(key + " = " + value + "(" + value.getClass().getSimpleName() + ")\t\t");
-            }
-            ;
-
-            System.out.println("\n");
-        }
-        ;
-
+        final int pageNumber = 1;
+        final int pageSize = 100;
+//        final List<Map<String, Object>> lists = bmServices.listGet(token, "", pageNumber, pageSize, "", "");
+//        int counter = 0;
+//        for (final Map<String, Object> list : lists) {
+//            final Map<String, Object> map = list;
+//            counter++;
+//            System.out.print(counter + ". ");
+//            for (final Object key : map.keySet()) {
+//                final Object value = map.get(key);
+//                System.out.print(key + " = " + value + " (" + value.getClass().getSimpleName() + ")\t");
+//            }
+//            System.out.println();
+//        }
     }
 
     public void listGetContacts() {
@@ -462,29 +461,24 @@ public class BMEApiMain {
         int pageSize = 2;
         String ListID = "";
 
-        Object[] Campaigns = bmServices.emailGet(token, "", "", pageNumber, pageSize, "", "");
+        Object[] campaigns = bmServices.emailGet(token, "", "", pageNumber, pageSize, "", "");
 
-        if (Campaigns.length > 0) {
-            Map<String, Object> map = (Map<String, Object>) Campaigns[0];
+        if (campaigns.length > 0) {
+            Map<String, Object> map = (Map<String, Object>) campaigns[0];
             EmailID = (String) map.get("id");
         }
-        ;
 
-        Object[] Lists = bmServices.listGet(token, "", pageNumber, pageSize, "", "");
-
-        if (Lists.length > 0) {
-            HashMap Mylist = (HashMap) Lists[0];
+        List<Map<String, Object>> lists = bmServices.listGet(token, "", pageNumber, pageSize, "", "");
+        if (lists.size() > 0) {
+            HashMap Mylist = (HashMap) lists.get(0);
             ListID = (String) Mylist.get("id");
         }
-        ;
-
         emailLists[0].put("emailID", EmailID);
         emailLists[0].put("toListID", ListID);
 
         boolean flag = bmServices.emailAssignList(token, EmailID, emailLists);
 
         System.out.println("output  = " + flag);
-
     }
 
     public void emailDelete() {
