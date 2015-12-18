@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,9 +66,9 @@ public class BenchmarkEmail {
     /**
      * Adding contacts to an existing list
      */
-    int listAddContacts(String listID, List<Contact> contacts) {
+    public int listAddContacts(long listId, List<Contact> contacts) {
         log.info("Adding {} contacts to {} ... {}",
-                contacts.size(), listID, contacts.stream().map(Contact::getEmail).toArray());
+                contacts.size(), listId, contacts.stream().map(Contact::getEmail).toArray());
         final List<Map<String, Object>> contactMaps = contacts.stream().map(it -> {
             final JsonNode tree = MAPPER.valueToTree(it);
             try {
@@ -77,7 +78,12 @@ public class BenchmarkEmail {
                 throw new BenchmarkEmailException(e, "Cannot convert %s to Map", it);
             }
         }).collect(Collectors.toList());
-        final int result = bmeServices.listAddContacts(accessToken, listID, contactMaps);
+        final int result = bmeServices.listAddContacts(accessToken, String.valueOf(listId), contactMaps);
+        // 1: OK
+        // -2: Already exists
+        final ImmutableMap<Integer, String> codes = ImmutableMap.of(1, "Added", -2, "Contact(s) already exist");
+        log.info("Added {} contacts to {}: {} ({})",
+                contacts.size(), listId, result, codes.get(result));
         return result;
     }
 

@@ -47,7 +47,7 @@ public interface InterfaceBMEApi {
     /**
      * Adding contacts to an existing list
      */
-    int listAddContacts(String token, String listID, List<Map<String, Object>> contacts);
+    int listAddContacts(String token, String listId, List<Map<String, Object>> contacts);
 
     /**
      * Fetching contact data from an existing list

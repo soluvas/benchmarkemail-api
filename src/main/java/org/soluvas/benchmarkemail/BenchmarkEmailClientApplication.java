@@ -61,7 +61,7 @@ public class BenchmarkEmailClientApplication implements CommandLineRunner {
 
         @Override
         public void run() {
-            final String listId = params.get(0);
+            final long listId = Long.valueOf(params.get(0));
             final Contact contact = new Contact();
             contact.setEmail(params.get(1));
             if (params.size() >= 3) {

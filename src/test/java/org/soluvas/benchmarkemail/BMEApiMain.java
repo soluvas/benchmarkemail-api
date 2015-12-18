@@ -17,7 +17,7 @@ public class BMEApiMain {
     private final String username = "Your Benchmark Email Login"; // Put in your account username
     private final String password = "Your Benchmark Email Password"; // Put in your account password
     private String token = "";
-    private String ListID = "BenchmarkEmail List ID - see listGet() method"; // put in ID of any list that you wish to use below
+    private String listId = "BenchmarkEmail List ID - see listGet() method"; // put in ID of any list that you wish to use below
     private InterfaceBMEApi bmServices = null;
 
     public static void main(String[] args) {
@@ -118,20 +118,20 @@ public class BMEApiMain {
         contacts.get(1).put("firstname", "Bruce");
         contacts.get(1).put("lastname", "Wayne");
 
-        int result = bmServices.listAddContacts(token, ListID, contacts);
+        int result = bmServices.listAddContacts(token, listId, contacts);
 
         System.out.println("Result  = " + result);
 
     }
 
     public void listDelete() {
-        boolean flag = bmServices.listDelete(token, ListID);
+        boolean flag = bmServices.listDelete(token, listId);
         System.out.println("Flag  = " + flag);
     }
 
     public void listGetContactDetails() {
         String email = "user1@battydomain.com";
-        Map<Object, Object> ContactDetail = bmServices.listGetContactDetails(token, ListID, email);
+        Map<Object, Object> ContactDetail = bmServices.listGetContactDetails(token, listId, email);
 
         for (final Object key : ContactDetail.keySet()) {
             final Object value = ContactDetail.get(key);
@@ -143,7 +143,7 @@ public class BMEApiMain {
 
     public void listUpdateContactDetails() {
         String email = "user1@battydomain.com";
-        Map<Object, Object> ContactDetail = bmServices.listGetContactDetails(token, ListID, email);
+        Map<Object, Object> ContactDetail = bmServices.listGetContactDetails(token, listId, email);
         String contactID = (String) ContactDetail.get("id");
         System.out.println("Contact ID = " + contactID);
         HashMap ContactDetailFinal = new HashMap();
@@ -158,7 +158,7 @@ public class BMEApiMain {
         ContactDetailFinal.put("FirstName", "Clark");
         ContactDetailFinal.put("LastName", "Kent");
 
-        Map<Object, Object> output = bmServices.listUpdateContactDetails(token, ListID, contactID, ContactDetailFinal);
+        Map<Object, Object> output = bmServices.listUpdateContactDetails(token, listId, contactID, ContactDetailFinal);
 
         for (final Object key : output.keySet()) {
             final Object value = output.get(key);
@@ -170,15 +170,15 @@ public class BMEApiMain {
 
     public void listDeleteContacts() {
         String email = "Jean.grey@xmen.com";
-        Map<Object, Object> ContactDetail = bmServices.listGetContactDetails(token, ListID, email);
+        Map<Object, Object> ContactDetail = bmServices.listGetContactDetails(token, listId, email);
         StringBuffer str = new StringBuffer();
         String contactID = (String) ContactDetail.get("id");
         str.append(contactID).append(",");
-        ContactDetail = bmServices.listGetContactDetails(token, ListID, "tarzan@tarzan.com");
+        ContactDetail = bmServices.listGetContactDetails(token, listId, "tarzan@tarzan.com");
         contactID = (String) ContactDetail.get("id");
         str.append(contactID);
         contactID = str.toString();
-        boolean flag = bmServices.listDeleteContacts(token, ListID, contactID);
+        boolean flag = bmServices.listDeleteContacts(token, listId, contactID);
         System.out.println("Flag  = " + flag);
     }
 
@@ -187,7 +187,7 @@ public class BMEApiMain {
         String[] ContactAddress = new String[2];
         ContactAddress[0] = "Edgar.burroughs@wildfiresanket.com";
         ContactAddress[1] = "Bruce.banner@hulksanket.com";
-        int result = bmServices.listUnsubscribeContacts(token, ListID, ContactAddress);
+        int result = bmServices.listUnsubscribeContacts(token, listId, ContactAddress);
         System.out.println("Result  = " + result);
     }
 
@@ -199,7 +199,7 @@ public class BMEApiMain {
         emailDetail.put("replyEmail", "feedback@____.com");
         emailDetail.put("subject", "New Products launch at our store 1");
         emailDetail.put("templateContent", "<html><body> Hello World </body></html>");
-        emailDetail.put("toListID", Integer.parseInt(ListID.trim()));
+        emailDetail.put("toListID", Integer.parseInt(listId.trim()));
         emailDetail.put("scheduleDate", "1 May 2010 5:00"); /* In UTC */
         emailDetail.put("webpageVersion", true);
         emailDetail.put("permissionReminderMessage", "You are receiving this email because of your relationship with our company. Unsubscribe is available at the bottom of this email.");
@@ -404,7 +404,7 @@ public class BMEApiMain {
         emailUpdate.put("replyEmail", "feedback@sitedomain.com");
         emailUpdate.put("subject", "New Products launch at our store");
         emailUpdate.put("templateContent", "<html><body> Hello World </body></html>");
-        emailUpdate.put("toListID", Integer.parseInt(ListID.trim()));
+        emailUpdate.put("toListID", Integer.parseInt(listId.trim()));
         emailUpdate.put("permissionReminderMessage", "You are receiving this email because of your relationship with our company. Unsubscribe is available at the bottom of this email.");
 
         boolean output = bmServices.emailUpdate(token, emailUpdate);
@@ -434,7 +434,7 @@ public class BMEApiMain {
         int pageNumber = 1;
         int pageSize = 2;
 
-        Object[] Contacts = bmServices.listGetContacts(token, ListID, "", pageNumber, pageSize, "", "");
+        Object[] Contacts = bmServices.listGetContacts(token, listId, "", pageNumber, pageSize, "", "");
         int Counter = 0;
 
         for (final Object Contact : Contacts) {

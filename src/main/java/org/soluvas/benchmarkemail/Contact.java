@@ -17,6 +17,15 @@ public class Contact implements Serializable {
     @JsonProperty("lastname")
     private String lastName;
 
+    public Contact() {
+    }
+
+    public Contact(String email, String firstName, String lastName) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public String getEmail() {
         return email;
     }
