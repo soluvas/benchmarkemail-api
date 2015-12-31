@@ -45,14 +45,32 @@ public interface InterfaceBMEApi {
     List<Map<String, Object>> listGet(String token, String filter, int pageNumber, int pageSize, String orderBy, String sortOrder);
 
     /**
-     * Adding contacts to an existing list
+     * Add the contact details to the given contact list. Multiple contacts would be added if the details has more than one items.
+     * http://www.benchmarkemail.com/API/Doc/listAddContacts
+     *
+     * @param token A valid token for your account. To generate a token, use the {@link #login(String, String)} method.
+     * @param listId The contact list ID in which to add contacts. To get all the contact lists, use the {@link #listGet(String, String, int, int, String, String)} method.
+     * @param contacts The array containing the contact details.
+     * @param optin Optional. "1" - will send a confirmation email before adding the contact to the list.
+     * @return The total number of contacts which were successfully added.
      */
-    int listAddContacts(String token, String listId, List<Map<String, Object>> contacts);
+    int listAddContacts(String token, String listId, List<Map<String, Object>> contacts, String optin);
+
+    /**
+     * Add the batch of contact details to the given contact list. Multiple contacts would be added if the details has more than one items.
+     * http://www.benchmarkemail.com/API/Doc/batchAddContacts
+     *
+     * @param token A valid token for your account. To generate a token, use the {@link #login(String, String)} method.
+     * @param listId The contact list ID in which to add contacts. To get all the contact lists, use the {@link #listGet(String, String, int, int, String, String)} method.
+     * @param contacts The array containing the contact details.
+     * @return Returns the batch ID. To check the status use the batchGetStatus method.
+     */
+    String batchAddContacts(String token, String listId, List<Map<String, Object>> contacts);
 
     /**
      * Fetching contact data from an existing list.
      *
-     * @param token A valid token for your account. To generate a token, use the login method.
+     * @param token A valid token for your account. To generate a token, use the {@link #login(String, String)} method.
      * @param listId The contact list ID from which you want to retrieve records. To get the contact lists in your account, use the listGet method.
      * @param filter Show contacts where the email address contains with the filter
      * @param pageNumber Fetch results from the given page number.

@@ -118,7 +118,7 @@ public class BMEApiMain {
         contacts.get(1).put("firstname", "Bruce");
         contacts.get(1).put("lastname", "Wayne");
 
-        int result = bmServices.listAddContacts(token, listId, contacts);
+        int result = bmServices.listAddContacts(token, listId, contacts, null);
 
         System.out.println("Result  = " + result);
 

@@ -70,7 +70,7 @@ public class BenchmarkEmailClientApplication implements CommandLineRunner {
             if (params.size() >= 4) {
                 contact.setLastName(params.get(3));
             }
-            final int result = benchmarkEmail.listAddContacts(listId, ImmutableList.of(contact));
+            final int result = benchmarkEmail.listAddContacts(listId, ImmutableList.of(contact), false);
             log.info("Added {}: {}", contact, result);
         }
     }

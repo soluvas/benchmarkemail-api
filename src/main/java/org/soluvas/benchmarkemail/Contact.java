@@ -1,5 +1,6 @@
 package org.soluvas.benchmarkemail;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -409,6 +410,11 @@ public class Contact implements Serializable {
         return date1;
     }
 
+    @JsonGetter("Date 1")
+    public String getDate1AsString() {
+        return date1 != null ? DATE12_FORMAT.print(date1) : null;
+    }
+
     public void setDate1(LocalDate date1) {
         this.date1 = date1;
     }
@@ -420,6 +426,11 @@ public class Contact implements Serializable {
 
     public LocalDate getDate2() {
         return date2;
+    }
+
+    @JsonGetter("Date 2")
+    public String getDate2AsString() {
+        return date2 != null ? DATE12_FORMAT.print(date2) : null;
     }
 
     public void setDate2(LocalDate date2) {

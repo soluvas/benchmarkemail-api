@@ -20,7 +20,7 @@ public class BMEApi {
         try {
             // Create XML RPC Configuration
             final XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
-            config.setServerURL(new URL("http://api.benchmarkemail.com/1.0/"));
+            config.setServerURL(new URL("http://api.benchmarkemail.com/1.3/"));
             config.setEnabledForExtensions(true);
             config.setConnectionTimeout(60 * 1000);
 
