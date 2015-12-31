@@ -73,6 +73,9 @@ public class BenchmarkEmail {
             final JsonNode tree = MAPPER.valueToTree(it);
             try {
                 final Map<String, Object> contactMap = MAPPER.treeToValue(tree, Map.class);
+                // Email -> email, First Name -> firstname, Last Name -> lastname
+                contactMap.put("firstname", contactMap.remove("First Name"));
+                contactMap.put("lastname", contactMap.remove("Last Name"));
                 return contactMap;
             } catch (JsonProcessingException e) {
                 throw new BenchmarkEmailException(e, "Cannot convert %s to Map", it);
@@ -85,6 +88,25 @@ public class BenchmarkEmail {
         log.info("Added {} contacts to {}: {} ({})",
                 contacts.size(), listId, result, codes.get(result));
         return result;
+    }
+
+    public List<Contact> listGetContactsAllFields(long listId, String filter, int pageNumber, int pageSize, String orderBy, String sortOrder) {
+        log.info("Get {}'s contacts all fields filter={} page={}/{} order={},{} ...",
+                listId, filter, pageNumber, pageSize, orderBy, sortOrder);
+        final List<Map<String, Object>> rawResults = bmeServices.listGetContactsAllFields(accessToken, Long.toString(listId), filter,
+                pageNumber, pageSize, orderBy, sortOrder);
+        log.info("Got {} {}'s contacts all fields filter={} page={}/{} order={},{}: {}",
+                rawResults.size(), listId, filter, pageNumber, pageSize, orderBy, sortOrder, rawResults);
+        final List<Contact> contacts = rawResults.stream().map(it -> {
+            final JsonNode jsonNode = MAPPER.valueToTree(it);
+            try {
+                final Contact contact = MAPPER.treeToValue(jsonNode, Contact.class);
+                return contact;
+            } catch (JsonProcessingException e) {
+                throw new BenchmarkEmailException(e, "Cannot convert %s to Contact", it);
+            }
+        }).collect(Collectors.toList());
+        return contacts;
     }
 
 }

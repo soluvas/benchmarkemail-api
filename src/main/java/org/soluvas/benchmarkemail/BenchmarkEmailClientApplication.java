@@ -75,14 +75,42 @@ public class BenchmarkEmailClientApplication implements CommandLineRunner {
         }
     }
 
+    @Parameters(commandDescription = "Get contacts of a list")
+    public class ListGetContactsCommand implements Runnable {
+        public static final String COMMAND = "listgetcontacts";
+
+        @Parameter(description = "List ID")
+        private List<String> params;
+        @Parameter(names = "-f", description = "Filter. Show contacts where the email address contains with the filter")
+        private String filter = "";
+        @Parameter(names = "-p", description = "Page number. Fetch results from the given page number.")
+        private int pageNumber = 1;
+        @Parameter(names = "-s", description = "Page size. Number of results per page.")
+        private int pageSize = 25;
+        @Parameter(names = "-o", description = "Order by. Sort the results based on \"email\" or \"date\".")
+        private String orderBy = "date";
+        @Parameter(names = "-a", description = "Sort order. Sort the results in the \"asc\"ending or \"desc\"ending order.")
+        private String sortOrder = "desc";
+
+        @Override
+        public void run() {
+            final long listId = Long.valueOf(params.get(0));
+            final List<Contact> contacts = benchmarkEmail.listGetContactsAllFields(listId, filter,
+                    pageNumber, pageSize, orderBy, sortOrder);
+            log.info("Got {} {}'s contacts: {}", contacts.size(), listId, contacts);
+        }
+    }
+
     @Override
     public void run(String... args) throws Exception {
         final Params params = new Params();
         final JCommander jc = new JCommander(params);
         final ListGetCommand listGet = new ListGetCommand();
         final ListAddCommand listAdd = new ListAddCommand();
+        final ListGetContactsCommand listGetContacts = new ListGetContactsCommand();
         jc.addCommand(ListGetCommand.COMMAND, listGet);
         jc.addCommand(ListAddCommand.COMMAND, listAdd);
+        jc.addCommand(ListGetContactsCommand.COMMAND, listGetContacts);
         jc.parse(args);
         switch (jc.getParsedCommand()) {
             case ListGetCommand.COMMAND:
@@ -90,6 +118,9 @@ public class BenchmarkEmailClientApplication implements CommandLineRunner {
                 break;
             case ListAddCommand.COMMAND:
                 listAdd.run();
+                break;
+            case ListGetContactsCommand.COMMAND:
+                listGetContacts.run();
                 break;
         }
     }

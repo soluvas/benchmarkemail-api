@@ -434,11 +434,11 @@ public class BMEApiMain {
         int pageNumber = 1;
         int pageSize = 2;
 
-        Object[] Contacts = bmServices.listGetContacts(token, listId, "", pageNumber, pageSize, "", "");
+        List<Map<String, Object>> Contacts = bmServices.listGetContacts(token, listId, "", pageNumber, pageSize, "", "");
         int Counter = 0;
 
-        for (final Object Contact : Contacts) {
-            final Map<String, Object> map = (Map<String, Object>) Contact;
+        for (final Map<String, Object> contact : Contacts) {
+            final Map<String, Object> map = contact;
 
             for (final Object key : map.keySet()) {
                 final Object value = map.get(key);

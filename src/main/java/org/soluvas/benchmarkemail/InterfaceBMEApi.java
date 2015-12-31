@@ -50,9 +50,32 @@ public interface InterfaceBMEApi {
     int listAddContacts(String token, String listId, List<Map<String, Object>> contacts);
 
     /**
-     * Fetching contact data from an existing list
+     * Fetching contact data from an existing list.
+     *
+     * @param token A valid token for your account. To generate a token, use the login method.
+     * @param listId The contact list ID from which you want to retrieve records. To get the contact lists in your account, use the listGet method.
+     * @param filter Show contacts where the email address contains with the filter
+     * @param pageNumber Fetch results from the given page number.
+     * @param pageSize Number of results per page.
+     * @param orderBy Sort the results based on "email" or "date".
+     * @param sortOrder Sort the results in the "asc"ending or "desc"ending order.
+     * @see #listGetContactsAllFields(String, String, String, int, int, String, String)
      */
-    Object[] listGetContacts(String token, String listID, String filter, int pageNumber, int pageSize, String orderBy, String sortOrder);
+    List<Map<String, Object>> listGetContacts(String token, String listId, String filter, int pageNumber, int pageSize, String orderBy, String sortOrder);
+
+    /**
+     * Get the contacts from the contact list, with all fields.
+     *
+     * @param token A valid token for your account. To generate a token, use the login method.
+     * @param listId The contact list ID from which you want to retrieve records. To get the contact lists in your account, use the listGet method.
+     * @param filter Show contacts where the email address contains with the filter
+     * @param pageNumber Fetch results from the given page number.
+     * @param pageSize Number of results per page.
+     * @param orderBy Sort the results based on "email" or "date".
+     * @param sortOrder Sort the results in the "asc"ending or "desc"ending order.
+     * @see #listGetContacts(String, String, String, int, int, String, String)
+     */
+    List<Map<String, Object>> listGetContactsAllFields(String token, String listId, String filter, int pageNumber, int pageSize, String orderBy, String sortOrder);
 
     /**
      * listUpdateContactDetails() method definition, this method is used for updating list contact data
