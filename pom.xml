@@ -70,10 +70,12 @@
 
     <build>
         <plugins>
+            <!--
+            We DON'T want to build an "uber-jar".
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 
