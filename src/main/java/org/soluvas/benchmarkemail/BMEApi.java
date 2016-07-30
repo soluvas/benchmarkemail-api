@@ -48,15 +48,18 @@ public class BMEApi {
                     final String methodName = pMethod.getName();
                     Object result;
                     try {
-                        TypeConverterFactory objConvert = new TypeConverterFactoryImpl();
-                        result = client.execute(methodName, pArgs);
-                        final TypeConverter typeConverter = objConvert
-                                .getTypeConverter(pMethod.getReturnType());
-                        return typeConverter.convert(result);
+                        if ("hashCode".equals(methodName) && null == pArgs) {
+                            return System.identityHashCode(pProxy);
+                        } else {
+                            TypeConverterFactory objConvert = new TypeConverterFactoryImpl();
+                            result = client.execute(methodName, pArgs);
+                            final TypeConverter typeConverter = objConvert
+                                    .getTypeConverter(pMethod.getReturnType());
+                            return typeConverter.convert(result);
+                        }
                     } catch (Exception e) {
                         String message = e.getMessage();
-                        if ((message == null)
-                                || (message.length() == 0)) {
+                        if (message == null || message.isEmpty()) {
                             message = "Unknown Error";
                         }
                         throw new BenchmarkEmailException(message, e);
